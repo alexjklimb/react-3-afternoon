@@ -12,8 +12,8 @@ import Edit from './Edit/Edit';
 //////////////////////////////////////////////////////// THIS COMPONENT IS BEING RENDERED IN THE *APP* COMPONENT
 
 export default class Post extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       editing: false,
@@ -54,7 +54,7 @@ export default class Post extends Component {
       // const editing = this.state.editing
       // const showMasterMenu = this.state.showMasterMenu
     const { editing, showMasterMenu } = this.state;
-
+    const {text, date, updatePostFn, id} = this.props
     return (
       // Main body of post
       <section className="Post__parent" onClick={ this.hideMasterMenu }>
@@ -66,7 +66,7 @@ export default class Post extends Component {
           {/* Drop-down menu. Remember that the "showMasterMenu" variable has been destructured off of this.state */}
           <div className="Post__master-menu" style={ { display: showMasterMenu ? 'flex' : 'none' } }>
             <span onClick={ this.showEdit }>Edit</span>
-            <span>Delete</span>
+            <span  onClick={() => this.props.deletePostFn(this.props.id)}>Delete</span>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ export default class Post extends Component {
           <span className="Post__name">DevMountain</span>
           <span className="Post__handle">@DevMountain</span>
 
-          <span className="Post__date">- POST DATE GOES HERE</span>
+          <span className="Post__date">- {date}</span>
         </div>
 
         {/* This is where the text goes. Notice the turnary statement. The turnary statement decides to display either the text OR the editor view
@@ -96,9 +96,11 @@ export default class Post extends Component {
             editing
             ?
               <Edit text=""
-                    hideEdit={ this.hideEdit } />
+                    hideEdit={ this.hideEdit }
+                    updatePostFn={updatePostFn} 
+                    id={id} />
             :
-              <span className="Post__text">POST TEXT GOES HERE</span>
+              <span className="Post__text">{text}</span>
           }
         </div>
 
